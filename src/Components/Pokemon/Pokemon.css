@@ -8,16 +8,18 @@
     align-items: center;
 
 }
-.POKEMON-IMAGE{
-    margin: 1rem;
-    height: 150px;
-    max-height: 80%;
-}
 .pokemon-name{
     font-size:larger;
     letter-spacing: 0.5rem;
 
 }
+
+.POKEMON-IMAGE{
+    margin: 1rem;
+    height: 150px;
+    max-height: 80%;
+}
+
 
 .pokemon:hover {
     background-color:bisque;

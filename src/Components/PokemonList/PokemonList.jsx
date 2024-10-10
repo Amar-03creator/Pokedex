@@ -6,12 +6,23 @@ function PokemonList(){
 
     const [pokemonList , setPokemonList] = useState([]);
     const [isLoading , setIsLoading] = useState(true);
-    const pokedex_URL= 'https://pokeapi.co/api/v2/pokemon';
+    const [pokedex_URL, setPokedexUrl]= useState('https://pokeapi.co/api/v2/pokemon');
+    const [nextURL , setNextURL] = useState('');
+    const [prevURL , setPrevURL] = useState('');
 
+
+
+    
+    
     async function downloadPokemons(){
+        setIsLoading(true);
         const response = await axios.get(pokedex_URL); //This downloads list of 20 pokemons
         const pokemonResults = response.data.results; //We get the array of pokemons from result
         console.log(response.data);
+        setNextURL(response.data.next);
+        setPrevURL(response.data.previous);
+
+
 
         //Iterating over the array of pokemons , and using their url , to create an array of promises that will download those 20 pokemons
         const pokemonResultPromise = pokemonResults.map((pokemon) => axios.get(pokemon.url))
@@ -35,10 +46,15 @@ function PokemonList(){
         setPokemonList(PokeListresult);
         setIsLoading(false); 
     }
-
-    useEffect(async () => {
-        downloadPokemons();
-    },[])   
+    useEffect(() => {
+        const fetchData = async () => {
+            await downloadPokemons();
+        };
+        fetchData();
+    }, [pokedex_URL]);
+    // useEffect(async () => {
+    //     downloadPokemons();
+    // },[pokedex_URL]);   
     //useEffect expects a callback and a dependency array
     //An empty array says that , it is not dependent on anything , if dont pass an empty array then the useeffect will be called again and again 
     //If I pass x on the array , then it will only track changes of x only
@@ -52,8 +68,8 @@ function PokemonList(){
                 }
             </div>
             <div className="controls">
-                <button>Prev</button>
-                <button>Next</button>
+                <button disabled={prevURL == null}  onClick={() => setPokedexUrl(prevURL)}>Prev</button>
+                <button disabled={nextURL == null}  onClick={() => setPokedexUrl(nextURL)}>Next</button>
 
             </div>
         </div>
