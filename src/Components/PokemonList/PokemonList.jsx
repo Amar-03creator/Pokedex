@@ -22,10 +22,9 @@ function PokemonList(){
     
     async function downloadPokemons(){
         // setIsLoading(true);
-        setPokemonListState({...pokemonListState , isLoading: true})   //unpacks every eveents under pokemonListState and then changes the required event 
+        setPokemonListState((state) => ({...state , isLoading: true}));  //unpacks every eveents under pokemonListState and then changes the required event 
         const response = await axios.get(pokemonListState.pokedex_URL); //This downloads list of 20 pokemons
         const pokemonResults = response.data.results; //We get the array of pokemons from result
-        console.log(response.data);
         setPokemonListState((state) => ({
             ...state , 
             nextURL: response.data.next , 
